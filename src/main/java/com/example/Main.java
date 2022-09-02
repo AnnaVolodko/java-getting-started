@@ -74,26 +74,72 @@ public class Main {
     }
   }
 
-  @RequestMapping("/dbAXS")
-  String dbAxs(Map<String, Object> model) {
-    try (Connection connection = dataSource.getConnection()) {
-      Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS AXSrecs (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO AXSrecs VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM AXSrecs");
+  // @RequestMapping("/RuleEngineRecords")
+  // String dbAxs(Map<String, Object> model) {
+  //   try (Connection connection = dataSource.getConnection()) {
+  //     Statement stmt = connection.createStatement();
+  //     stmt.executeUpdate("CREATE TABLE IF NOT EXISTS AXSrecs (tick timestamp)");
+  //     stmt.executeUpdate("INSERT INTO AXSrecs VALUES (now())");
+  //     ResultSet rs = stmt.executeQuery("SELECT tick FROM AXSrecs");
 
-      ArrayList<String> output = new ArrayList<String>();
-      while (rs.next()) {
-        output.add("Read from DB: " + rs.getTimestamp("tick"));
-      }
+  //     ArrayList<String> output = new ArrayList<String>();
+  //     while (rs.next()) {
+  //       output.add("Read from DB: " + rs.getTimestamp("tick"));
+  //     }
 
-      model.put("records", output);
-      return "dbAXS";
-    } catch (Exception e) {
-      model.put("message", e.getMessage());
-      return "error";
-    }
-  }
+  //     model.put("records", output);
+  //     return "dbAXS";
+  //   } catch (Exception e) {
+  //     model.put("message", e.getMessage());
+  //     return "error";
+  //   }
+  // }
+
+  ///////////////////////
+
+  //   @RequestMapping("/process")
+  //   public String processSettlement1(Map<String, Object> model) {
+        
+  //       ArrayList<String> output = new ArrayList<String>();   
+  //       ArrayList<String> outputmessage = new ArrayList<String>();
+
+  //       try (Connection connection = dataSource.getConnection()) {
+  //         Statement stmt = connection.createStatement();    
+  //         String transid="";
+  //         ResultSet rs = stmt.executeQuery("SELECT  * FROM Salesforce.AXS_POC__c  WHERE  (processed_yn__c is null or processed_yn__c = 'f') LIMIT 2");
+  //         while (rs.next()) {  
+
+  //           transid = rs.getString("Transaction_id__c");
+            
+  //         }
+        
+  //       if (transid !="") {
+  //         stmt.executeUpdate("UPDATE Salesforce.AXS_POC__c set processed_yn__c = 'Yes' where Transaction_id__c = '" + transid + "'");   
+  //         outputmessage.add("Settlement Process Fired ");              
+  //        }  
+  //       outputmessage.add("Settlement Process Completed");   
+  //       model.put("message", outputmessage);
+          
+        
+  //       System.out.println("checkpoint2");   
+  //       ResultSet rs1 = stmt.executeQuery("select  Transaction_id__c,ordernumber__c,Component__c,fee__c,processed_yn__c from Salesforce.AXS_POC__c ");              
+        
+  //       while (rs1.next()) {   
+  //         output.add("ordernumber : " + rs1.getString("ordernumber__c"));
+  //         output.add("Component : " + rs1.getString("Component__c"));
+  //         output.add("fee : " + rs1.getString("fee__c"));
+  //         output.add("Transaction_id : " + rs1.getString("Transaction_id__c"));
+  //         output.add("processed_yn : " + rs1.getString("processed_yn__c"));
+  //         output.add("-----------------------------------------------");
+  //         }
+        
+  //       model.put("records", output);
+  //       return "db";
+  //       } catch (Exception e) {
+  //       model.put("message", e.getMessage());
+  //       return "error";
+  //       }
+  //   }
 
   @RequestMapping("/hello")
   String hello(Map<String, Object> model) {
