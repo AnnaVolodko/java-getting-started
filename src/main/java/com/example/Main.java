@@ -74,6 +74,27 @@ public class Main {
     }
   }
 
+  @RequestMapping("/dbAXS")
+  String dbAxs(Map<String, Object> model) {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS AXSrecs (tick timestamp)");
+      stmt.executeUpdate("INSERT INTO AXSrecs VALUES (now())");
+      ResultSet rs = stmt.executeQuery("SELECT tick FROM AXSrecs");
+
+      ArrayList<String> output = new ArrayList<String>();
+      while (rs.next()) {
+        output.add("Read from DB: " + rs.getTimestamp("tick"));
+      }
+
+      model.put("records", output);
+      return "dbAXS";
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "error";
+    }
+  }
+
   @RequestMapping("/hello")
   String hello(Map<String, Object> model) {
     model.put("message", "Welcome to my app!");
